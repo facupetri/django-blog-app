@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Inicio{% endblock title %}
+
+{% block titular %}Bienvenido al Blog{% endblock titular %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <div class="row">
+        {% for post in Post %}
+            <div class="col-md-6 mb-4">
+                <div class="card shadow-sm">
+                    <a href="{% url 'post_detail' post.pk %}">
+                        <img class="card-img-top" src="{% if post.imagen %}{{ post.imagen.url }}{% else %}https://via.placeholder.com/700x350{% endif %}" alt="Imagen del post">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.titulo }}</h5>
+                        <p class="card-text">{{ post.subtitulo|default:"" }}</p>
+                        <small>Publicado el {{ post.fecha_creacion|date:"F j, Y" }} por</small>
+                        <p class="author-name mb-3">
+                            <a href="{% url 'perfil_usuario' post.autor %}" class="h5 text-dark">{{ post.autor }}</a>
+                        </p>
+                        <a href="{% url 'post_detail' post.pk %}" class="btn btn-outline-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock contenido %}

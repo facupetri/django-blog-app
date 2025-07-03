@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Editar Usuario{% endblock title %}
+{% block titular %}Editar Usuario{% endblock titular %}
+
+{% block contenido %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card p-4 shadow-sm" style="width: 100%; max-width: 600px;">
+        <h4 class="text-center mb-4">Editar Usuario</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <table class="table">
+                {{ form.as_table }}
+            </table>
+            <div class="d-flex justify-content-between">
+                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100 mt-3">Volver</a>
+                <button type="submit" class="btn btn-outline-primary w-100 mt-3">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock contenido %}

@@ -1,0 +1,32 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Eliminar Post{% endblock title %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h2>¿Está seguro de que desea eliminar este post?</h2>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.titulo }}</h5>
+                    <p class="card-text">{{ post.subtitulo }}</p>
+                    <p class="text-muted">
+                        <small>Publicado el {{ post.fecha_creacion|date:"F j, Y" }} por {{ post.autor }}</small>
+                    </p>
+                    <hr>
+                    <p>Esta acción no se puede deshacer.</p>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                        <a href="javascript:history.back()" class="btn btn-secondary">Cancelar</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

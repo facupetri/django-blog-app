@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Panel de Usuario{% endblock title %}
+{% block titular %}Bienvenido, {{ user.username }}{% endblock titular %}
+
+{% block contenido %}
+
+<style>
+    .btn-outline-primary, 
+    .btn-outline-warning, 
+    .btn-outline-danger {
+        color: black;
+    }
+</style>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <h4>Opciones del Perfil</h4>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{% url 'edit_user' %}" class="btn btn-outline-primary w-100 mb-2">Editar Perfil</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'acerca' %}" class="btn btn-outline-success w-100 mb-2">Acerca de mí</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'change_pass' %}" class="btn btn-outline-warning w-100 mb-2">Cambiar Contraseña</a>
+                </li>
+                <li class="list-group-item">
+                {% if user.is_staff %}
+                <a href="{% url 'admin_dashboard' %}" class="btn btn-outline-warning w-100 mb-2">Panel de Administración</a>
+                {% endif %}
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger w-100">Cerrar Sesión</a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <h4>Tus Posts</h4>
+            {% if user_posts %}
+                <ul class="list-group">
+                    {% for post in user_posts %}
+                        <li class="list-group-item">
+                            <h5>{{ post.titulo }}</h5>
+                            <p>{{ post.posteo|truncatewords:20 }}</p>
+                            <a href="{% url 'post_detail' post.pk %}" class="btn btn-primary">Ver más</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No has creado ningún post todavía.</p>
+            {% endif %}
+
+            {% if user.is_superuser %}
+                <h4 class="mt-5">Administrar Usuarios</h4>
+                <ul class="list-group">
+                    {% for usuario in usuarios %}
+                        <li class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5>{{ usuario.username }}</h5>
+                                    <p>{{ usuario.email }}</p>
+                                </div>
+                                <div>
+                                    <a href="{% url 'admin_edit_user' usuario.pk %}" class="btn btn-outline-primary btn-sm">Editar</a>
+                                    {% if not usuario.is_superuser %}
+                                    <a href="{% url 'admin_delete_user' usuario.pk %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock contenido %}

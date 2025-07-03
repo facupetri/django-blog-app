@@ -1,0 +1,50 @@
+{% extends 'base/index.html' %}
+{% load static %}
+
+{% block title %}Cambiar Contraseña{% endblock title %}
+{% block titular %}Cambiar Contraseña{% endblock titular %}
+
+{% block contenido %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endif %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card p-4 shadow-sm" style="width: 100%; max-width: 1000px;">
+        <h4 class="text-center mb-4">Cambiar Contraseña</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <table class="table table-borderless">
+                <tr>
+                    <th>{{ form.old_password.label_tag }}</th>
+                    <td>{{ form.old_password }}</td>
+                    <td rowspan="3" style="vertical-align: top;">
+                        <ul class="list-unstyled">
+                            <li>Su contraseña no puede ser similar a otros componentes de su información personal.</li>
+                            <li>Su contraseña debe contener por lo menos 8 caracteres.</li>
+                            <li>Su contraseña no puede ser una contraseña usada muy comúnmente.</li>
+                            <li>Su contraseña no puede estar formada exclusivamente por números.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{ form.new_password1.label_tag }}</th>
+                    <td>{{ form.new_password1 }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.new_password2.label_tag }}</th>
+                    <td>{{ form.new_password2 }}</td>
+                </tr>
+            </table>
+            <div class="d-flex justify-content-between">
+                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100 mt-3">Volver</a>
+                <button type="submit" class="btn btn-outline-primary w-100 mt-3">Guardar cambios</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock contenido %}

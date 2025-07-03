@@ -1,0 +1,92 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %} Lista de Posts {% endblock title %}
+block
+
+{% block contenido %}
+<div class="container mt-4">
+    <div class="row">
+        {% for post in Post %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <a href="{% url 'post_detail' post.pk %}">
+                        <img src="{% if post.imagen %}{{ post.imagen.url }}{% else %}https://via.placeholder.com/700x350{% endif %}" class="card-img-top" alt="Imagen del post">
+                    </a>
+                    <div class="card-body d-flex flex-column">
+
+                        </p>
+                        <h5 class="card-title">{{ post.titulo }}</h5>
+                        <p class="card-text">{{ post.subtitulo|default:"" }}</p>
+                        <small>Publicado el {{ post.fecha_creacion|date:"F j, Y" }} por</small>
+                        <p class="author-name mb-3">
+                        <a href="{% url 'perfil_usuario' post.autor %}" class="h5 text-dark">{{ post.autor }}</a></p>
+                        <p class="text-muted mb-2"></p>
+                        <p class="card-text">{{ post.posteo|truncatewords:20 }}</p>
+                        <a href="{% url 'post_detail' post.pk %}" class="btn btn-primary mt-auto">Leer más →</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">No se han encontrado posts.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+    <!-- Paginación -->
+    <nav aria-label="Paginación de Posts">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Primera">Primera</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Anterior">Anterior</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Primera">Primera</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Anterior">Anterior</a>
+                </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item active" aria-current="page">
+                        <a class="page-link" href="#">{{ num }}</a>
+                    </li>
+                {% elif num > page_obj.number|add:-3 and num < page_obj.number|add:3 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </li>
+                {% elif num == 1 %}
+                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                    {% if page_obj.number > 4 %}<li class="page-item"><span class="page-link">...</span></li>{% endif %}
+                {% elif num == page_obj.paginator.num_pages %}
+                    {% if page_obj.number < page_obj.paginator.num_pages|add:-3 %}<li class="page-item"><span class="page-link">...</span></li>{% endif %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Siguiente">Siguiente</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Última">Última</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Siguiente">Siguiente</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-label="Última">Última</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock contenido %}

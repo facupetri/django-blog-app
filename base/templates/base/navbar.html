@@ -1,0 +1,46 @@
+<!-- navbar.html -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">Proyecto Final Petringa</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" 
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'ListarPosts' %}">Posteos</a></li>
+                    
+                {% endif %}
+            </ul>
+
+            {% if request.user.is_authenticated %}
+                <div class="d-flex align-items-center">
+                    {% if request.user.avatar %}
+                        <img src="{{ request.user.avatar.imagen.url }}" alt="Avatar" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+                    {% else %}
+                        <img src="1" alt="Avatar" class="rounded-circle me-2" style="height: 40px; width: 40px;">
+            {% endif %}
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ request.user.username }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'CrearPost' %}">Crear Post</a></li>
+                            <li><a class="dropdown-item" href="{% url 'user_dashboard' %}">Mi Panel</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            {% else %}
+                <div class="d-flex">
+                    <a class="btn btn-outline-light me-2" href="{% url 'login' %}">Iniciar Sesión</a>
+                    <a class="btn btn-primary" href="{% url 'register' %}">Registrarse</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>

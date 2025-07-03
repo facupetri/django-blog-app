@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Panel de Administración{% endblock title %}
+{% block titular %}Panel de Administración{% endblock titular %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-9">
+            <h4>Resumen General</h4>
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de Usuarios</h5>
+                            <p class="card-text">{{ total_usuarios }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de Posteos</h5>
+                            <p class="card-text">{{ total_posteos }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                </div>
+            </div>
+            <hr>
+            <h4>Usuarios Recientes</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Email</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for usuario in usuarios_recientes %}
+                    <tr>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.date_joined|date:"d M Y" }}</td>
+                        <td>
+                            <a href="{% url 'perfil_usuario' usuario.username %}" class="btn btn-sm btn-outline-info">Ver Perfil</a>
+                            <a href="{% url 'admin_edit_user' usuario.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                            <a href="{% url 'admin_delete_user' usuario.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h4 class="mt-5">Posts Recientes</h4>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Fecha</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts_recientes %}
+                    <tr>
+                        <td>{{ post.titulo }}</td>
+                        <td>{{ post.autor.username }}</td>
+                        <td>{{ post.fecha_creacion|date:"d M Y" }}</td>
+                        <td>
+                            <a href="{% url 'post_detail' post.pk %}" class="btn btn-sm btn-outline-info">Ver Post</a>
+                            <a href="{% url 'delete_post' post.pk %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock contenido %}

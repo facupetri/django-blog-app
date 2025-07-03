@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Eliminar Usuario{% endblock title %}
+{% block titular %}Eliminar Usuario{% endblock titular %}
+
+{% block contenido %}
+<div class="d-flex justify-content-center mt-5">
+    <div class="card p-4 shadow-sm" style="width: 100%; max-width: 600px;">
+        <h4 class="text-center mb-4">¿Estás seguro que deseas eliminar a este usuario?</h4>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="d-flex justify-content-between">
+                <a href="javascript:history.back()" class="btn btn-outline-secondary w-100 mt-3">Volver</a>
+                <button type="submit" class="btn btn-danger w-100 mt-3">Eliminar Usuario</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock contenido %}
